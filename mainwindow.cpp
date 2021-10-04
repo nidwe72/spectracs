@@ -134,7 +134,14 @@ Violet :
 
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
-    layout->addWidget(chartView,2,0,1,1);
+
+    SpectralMeasurementBarChart* spectralMeasurementBarChart=new SpectralMeasurementBarChart();
+
+
+
+    //layout->addWidget(chartView,2,0,1,1);
+    layout->addWidget(spectralMeasurementBarChart,2,0,1,1);
+
 
     stackedWidget->addWidget(mainWidget);
 
@@ -154,12 +161,10 @@ MainWindow::~MainWindow()
 void MainWindow::handleMeasurementRequest(){
     QUrl qrl("http://localhost:8877/?action=measurement");
     QNetworkAccessManager* manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+
 
     ApplicationContext *applicationContext = applicationContext->getInstance();
     SpectrasServerResponseHandler* spectrasServerResponseHandler=applicationContext->getSpectrasServerResponseHandler();
-
-    //connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
 
     QObject::connect(
             manager,

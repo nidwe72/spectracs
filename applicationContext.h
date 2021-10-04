@@ -6,7 +6,7 @@
 
 class ApplicationContext
 {
-public:    
+public:
     static ApplicationContext* getInstance();
 
     SpectralJob* getSpectralJob();

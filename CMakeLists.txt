@@ -28,6 +28,8 @@ set(PROJECT_SOURCES
         spectralMeasurement.cpp
         spectrasServerResponseHandler.h
         spectrasServerResponseHandler.cpp
+        spectralMeasurementBarChart.h
+        spectralMeasurementBarChart.cpp
         mainwindow.ui
         ${TS_FILES}
 )

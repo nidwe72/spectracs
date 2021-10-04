@@ -23,9 +23,18 @@ void SpectrasServerResponseHandler::handleResponse(QNetworkReply *networkReply)
 
     //QList valuesList=valuesMap.keys().toList();
 
+    SpectralMeasurement* spectralMeasurement=new SpectralMeasurement();
+    QMap<float, float>* spectralMeasurementValues=spectralMeasurement->getValues();
+
     foreach( QString key, valuesMap.keys() ){
         qDebug()<<key.toFloat();
         qDebug()<<valuesMap.value(key).toFloat();
+
+        QMap<float,float>* foo=new QMap<float,float>();
+
+        spectralMeasurementValues->insert(key.toFloat(),valuesMap.value(key).toFloat());
     }
+
+    emit this->onSpectralMeasurement(spectralMeasurement);
 
 }

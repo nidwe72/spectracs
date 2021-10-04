@@ -6,7 +6,7 @@ ApplicationContext *ApplicationContext::getInstance()
 {
 
     if(!instance) {
-        instance = new ApplicationContext();        
+        instance = new ApplicationContext();
     }
     return instance;
 

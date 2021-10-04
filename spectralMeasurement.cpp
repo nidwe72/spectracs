@@ -1,6 +1,6 @@
 #include "spectralMeasurement.h"
 
-SpectralMeasurement::SpectralMeasurement()
+SpectralMeasurement::SpectralMeasurement(QObject *parent) : QObject(parent)
 {
 
 }

@@ -23,6 +23,7 @@
 
 #include "spectrasServerResponseHandler.h"
 
+#include "spectralMeasurementBarChart.h"
 
 #include "applicationContext.h"
 
