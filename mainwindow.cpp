@@ -151,6 +151,27 @@ Violet :
 
     ApplicationContext *applicationContext = applicationContext->getInstance();
 
+    QDBManager *dbm = QDBManager::create("test", "QSQLITE");
+    dbm->register_entity<SpectralMeasurementDbEntity>();
+
+    dbm->openDB("testdb.sqlite");
+    dbm->createTable<SpectralMeasurementDbEntity>();
+
+    SpectralMeasurementDbEntity* spectralMeasurementDbEntity=new SpectralMeasurementDbEntity();
+    spectralMeasurementDbEntity->set_mac("Test");
+
+    int id = 0;
+
+    qDebug()<<"ID "<<id<<"\trows affected "<<dbm->insertOrUpdate<SpectralMeasurementDbEntity>(spectralMeasurementDbEntity);
+
+    QListSpectralMeasurementDbEntity testEntities = dbm->listAll<SpectralMeasurementDbEntity>();
+    qDebug()<<testEntities.count();
+    foreach (SpectralMeasurementDbEntity* testEntity, testEntities) {
+        qDebug()<<testEntity->toString();
+    }
+
+    dbm->closeDB();
+
 }
 
 MainWindow::~MainWindow()

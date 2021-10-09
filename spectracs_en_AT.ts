@@ -9,4 +9,13 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>qSqlite</name>
+    <message>
+        <location filename="qdbmanager/interfaces/qsqlite.cpp" line="48"/>
+        <location filename="qdbmanager/interfaces/qsqlite.cpp" line="55"/>
+        <source>Si è verificato un errore nell&apos;apertura del Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

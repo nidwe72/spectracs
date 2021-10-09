@@ -27,6 +27,10 @@
 
 #include "applicationContext.h"
 
+#include "spectralMeasurementDbEntity.h"
+
+#include "qdbmanager/qdbmanager.h"
+
 
 
 

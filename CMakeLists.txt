@@ -11,12 +11,29 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools Sql REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools Sql REQUIRED)
 
 set(TS_FILES spectracs_en_AT.ts)
 
 set(PROJECT_SOURCES
+
+        qdbmanager/criteriabuilder.cpp
+        qdbmanager/criteriabuilder.h
+        qdbmanager/entities/abstractEntity.cpp
+        qdbmanager/entities/abstractEntity.h
+        qdbmanager/entities/baseEntity.cpp
+        qdbmanager/entities/baseEntity.h
+        qdbmanager/entityfactory.cpp
+        qdbmanager/entityfactory.h
+        qdbmanager/interfaces/qsqlite.cpp
+        qdbmanager/interfaces/qsqlite.h
+        qdbmanager/qdbmanager.cpp
+        qdbmanager/qdbmanager.h
+        qdbmanager/tpmanager.cpp
+        qdbmanager/tpmanager.h
+
+
         main.cpp
         mainwindow.cpp
         mainwindow.h
@@ -30,7 +47,12 @@ set(PROJECT_SOURCES
         spectrasServerResponseHandler.cpp
         spectralMeasurementBarChart.h
         spectralMeasurementBarChart.cpp
+        spectralMeasurementDbEntity.h
+        spectralMeasurementDbEntity.cpp
         mainwindow.ui
+
+
+
         ${TS_FILES}
 )
 
@@ -74,6 +96,10 @@ target_link_libraries(spectracs PRIVATE Qt6::Network)
 
 find_package(Qt6 COMPONENTS Charts REQUIRED)
 target_link_libraries(spectracs PRIVATE Qt6::Charts)
+
+find_package(Qt6 COMPONENTS Sql REQUIRED)
+target_link_libraries(spectracs PRIVATE Qt6::Sql)
+
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(spectracs)
