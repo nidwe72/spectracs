@@ -51,6 +51,8 @@ set(PROJECT_SOURCES
         spectralMeasurementDbEntity.cpp
         mainwindow.ui
 
+        testEntity.h
+        testEntity.cpp
 
 
         ${TS_FILES}
@@ -99,6 +101,11 @@ target_link_libraries(spectracs PRIVATE Qt6::Charts)
 
 find_package(Qt6 COMPONENTS Sql REQUIRED)
 target_link_libraries(spectracs PRIVATE Qt6::Sql)
+
+add_subdirectory(../../qt-sqlite-orm qt-sqlite-orm.build)
+
+target_link_libraries(spectracs PUBLIC qtorm)
+
 
 
 if(QT_VERSION_MAJOR EQUAL 6)

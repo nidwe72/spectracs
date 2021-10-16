@@ -172,6 +172,40 @@ Violet :
 
     dbm->closeDB();
 
+    auto foo =qRegisterOrmEntity<TestEntity>;
+    QOrmSession session;
+
+    //QOrmSessionConfiguration qOrmSessionConfiguration=session.configuration();
+
+    auto token = session.declareTransaction(QOrm::TransactionPropagation::Require,
+                                                    QOrm::TransactionAction::Commit);
+
+    TestEntity* testEntity=new TestEntity();
+    testEntity->setName("test");
+    session.merge(testEntity);
+    //session.commitTransaction();
+
+
+    TestEntity* testEntity2=new TestEntity();
+    testEntity2->setName("test2");
+    session.merge(testEntity2);
+
+
+    TestEntity* te = nullptr;
+
+    //session.commitTransaction();
+
+
+    QList<TestEntity*> testEntitityResult = session.from<TestEntity>()
+                                           .select()
+                                           .toVector();
+
+    for(auto item : testEntitityResult)    {
+        qDebug() << "id:" <<item ->getId() << " name: "<<item ->getName();
+    }
+
+    //session.remove(testEntity);
+
 }
 
 MainWindow::~MainWindow()

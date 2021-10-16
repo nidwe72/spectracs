@@ -20,6 +20,9 @@
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QVariantMap>
+#include <QVariant>
+
+#include <QPartialOrdering>
 
 #include "spectrasServerResponseHandler.h"
 
@@ -31,6 +34,12 @@
 
 #include "qdbmanager/qdbmanager.h"
 
+#include <QtOrm/qormglobal.h>
+#include <QtOrm/QOrmSession>
+
+#include <QtOrm/QOrmSessionConfiguration>
+
+#include "testEntity.h"
 
 
 
