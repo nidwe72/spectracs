@@ -27,8 +27,12 @@ void SpectralMeasurementBarChart::foo(SpectralMeasurement *spectralMeasurement)
     QBarSet* set0 = new QBarSet("measurement");
     QStringList categories;
 
+    float maximalValue=0;
     foreach( float nanometer, spectralMeasurementValues->keys() ){
         set0->append(spectralMeasurementValues->value(nanometer));
+        if(maximalValue>maximalValue){
+          maximalValue=spectralMeasurementValues->value(nanometer);
+        }
         categories.append(QString::number(nanometer));
     }
 
@@ -46,7 +50,7 @@ void SpectralMeasurementBarChart::foo(SpectralMeasurement *spectralMeasurement)
     series->attachAxis(axisX);
 
     QValueAxis *axisY = new QValueAxis();
-    axisY->setRange(0,1.0);
+    axisY->setRange(0,maximalValue);
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 

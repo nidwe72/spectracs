@@ -41,7 +41,8 @@
 
 #include "testEntity.h"
 
-
+#include "ui/SpectralJobViewModule.h"
+#include "ui/HomeViewModule.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -57,9 +58,11 @@ public:
 
 private:
     QTextEdit* testText;
+    QStackedWidget* stackedWidget;
 
 public slots:    
     void handleMeasurementRequest();
+    void navigateToSpectralJobViewModule();
 
 private:
     Ui::MainWindow *ui;

@@ -4,6 +4,8 @@ project(spectracs VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(CMAKE_PREFIX_PATH "/home/nidwe/Qt/6.1.3/gcc_64")
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -56,7 +58,7 @@ set(PROJECT_SOURCES
 
 
         ${TS_FILES}
-)
+        ui/SpectralJobViewModule.cpp ui/SpectralJobViewModule.h ui/HomeViewModule.cpp ui/HomeViewModule.h ui/SpectralJobsViewModule.cpp ui/SpectralJobsViewModule.h ui/SpectralJobOverviewViewModule.cpp ui/SpectralJobOverviewViewModule.h)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(spectracs

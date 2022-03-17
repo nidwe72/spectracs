@@ -8,9 +8,9 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->setupUi(this);
 
     setGeometry(0,0,400,600);
-    QStackedWidget *stackedWidget = new QStackedWidget;
+    stackedWidget = new QStackedWidget();
 
-
+/*
     QWidget* mainWidget=new QWidget;
 
     QGridLayout* layout=new QGridLayout;
@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(testText,1,0,1,1);
 
     QLineSeries *seriesOil1Thick = new QLineSeries();
+*/
 
     //light bulb only
     /*
@@ -59,13 +60,14 @@ Blue   :1194.5640869140625
 Violet :271.0093078613281
     */
 
-
+/*
     seriesOil1Thick->append(450, 4314.064453125f);
     seriesOil1Thick->append(500, 3739.27978515625f);
     seriesOil1Thick->append(550, 3350.059326171875f);
     seriesOil1Thick->append(570, 7258.037109375f);
     seriesOil1Thick->append(600, 1194.5640869140625f);
     seriesOil1Thick->append(650, 271.0093078613281f);
+*/
 
 /*
 Red    :13729.08203125
@@ -76,7 +78,7 @@ Blue   :12098.138671875
 Violet :1437.032470703125
 */
 
-
+/*
     QLineSeries *seriesOil2 = new QLineSeries();
     seriesOil2->append(450, 13729.08203125f);
     seriesOil2->append(500, 22176.126953125f);
@@ -84,7 +86,7 @@ Violet :1437.032470703125
     seriesOil2->append(570, 38454.82421875f);
     seriesOil2->append(600, 12098.138671875f);
     seriesOil2->append(650, 1437.032470703125f);
-
+*/
 
     /*
     QLineSeries *seriesOil2Reflex = new QLineSeries();
@@ -96,7 +98,7 @@ Violet :1437.032470703125
     seriesOil2Reflex->append(450, 496.4708251953125f);
     */
 
-
+/*
     QLineSeries *seriesOil2Reflex = new QLineSeries();
     seriesOil2Reflex->append(650, 4386.8564453125f);
     seriesOil2Reflex->append(600, 2497.695556640625f);
@@ -104,7 +106,7 @@ Violet :1437.032470703125
     seriesOil2Reflex->append(550, 1892.8314208984375f);
     seriesOil2Reflex->append(500, 2814.272705078125f);
     seriesOil2Reflex->append(450, 710.54541015625f);
-
+*/
 
 
 /*
@@ -116,41 +118,23 @@ Blue   :
 Violet :
 */
 
-
-
-
     //*series << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
 
-    QChart *chart = new QChart();
-    chart->legend()->hide();
-    //chart->addSeries(seriesOil1Thick);
+    HomeViewModule* homeViewModule=new HomeViewModule();
+    stackedWidget->addWidget(homeViewModule);
 
-    //chart->addSeries(seriesOil2);
-    chart->addSeries(seriesOil2Reflex);
+    auto createSpectralJobButton=homeViewModule->getCreateSpectralJobButton();
+    connect(createSpectralJobButton, &QPushButton::released, this, &MainWindow::navigateToSpectralJobViewModule);
 
-
-    chart->createDefaultAxes();
-    chart->setTitle("Simple line chart example");
-
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    SpectralMeasurementBarChart* spectralMeasurementBarChart=new SpectralMeasurementBarChart();
-
-
-
-    //layout->addWidget(chartView,2,0,1,1);
-    layout->addWidget(spectralMeasurementBarChart,2,0,1,1);
-
-
-    stackedWidget->addWidget(mainWidget);
+    SpectralJobViewModule* spectralJobViewModule=new SpectralJobViewModule(this);
+    stackedWidget->addWidget(spectralJobViewModule);
 
     stackedWidget->setCurrentIndex(0);
-
     setCentralWidget(stackedWidget);
 
     ApplicationContext *applicationContext = applicationContext->getInstance();
 
+    /*
     QDBManager *dbm = QDBManager::create("test", "QSQLITE");
     dbm->register_entity<SpectralMeasurementDbEntity>();
 
@@ -175,7 +159,7 @@ Violet :
     auto foo =qRegisterOrmEntity<TestEntity>;
     QOrmSession session;
 
-    //QOrmSessionConfiguration qOrmSessionConfiguration=session.configuration();
+    QOrmSessionConfiguration qOrmSessionConfiguration=session.configuration();
 
     auto token = session.declareTransaction(QOrm::TransactionPropagation::Require,
                                                     QOrm::TransactionAction::Commit);
@@ -205,6 +189,7 @@ Violet :
     }
 
     //session.remove(testEntity);
+    */
 
 }
 
@@ -214,6 +199,8 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::handleMeasurementRequest(){
+    //QUrl qrl("http://localhost:8877/?action=measurement");
+    //QUrl qrl("http://192.168.1.109:8877/?action=measurement");
     QUrl qrl("http://localhost:8877/?action=measurement");
     QNetworkAccessManager* manager = new QNetworkAccessManager(this);
 
@@ -229,6 +216,10 @@ void MainWindow::handleMeasurementRequest(){
             );
 
     manager->get(QNetworkRequest(qrl));
+}
+
+void MainWindow::navigateToSpectralJobViewModule() {
+    stackedWidget->setCurrentIndex(1);
 }
 
 
