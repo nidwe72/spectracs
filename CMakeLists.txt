@@ -1,10 +1,13 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
 
 project(spectracs VERSION 0.1 LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(CMAKE_PREFIX_PATH "/home/nidwe/Qt/6.1.3/gcc_64")
+set(CMAKE_PREFIX_PATH "/home/nidwe/Qt/6.2.4/gcc_64")
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -13,28 +16,14 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(Qt6 REQUIRED COMPONENTS Core)
+
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools Sql REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools Sql REQUIRED)
 
 set(TS_FILES spectracs_en_AT.ts)
 
 set(PROJECT_SOURCES
-
-        qdbmanager/criteriabuilder.cpp
-        qdbmanager/criteriabuilder.h
-        qdbmanager/entities/abstractEntity.cpp
-        qdbmanager/entities/abstractEntity.h
-        qdbmanager/entities/baseEntity.cpp
-        qdbmanager/entities/baseEntity.h
-        qdbmanager/entityfactory.cpp
-        qdbmanager/entityfactory.h
-        qdbmanager/interfaces/qsqlite.cpp
-        qdbmanager/interfaces/qsqlite.h
-        qdbmanager/qdbmanager.cpp
-        qdbmanager/qdbmanager.h
-        qdbmanager/tpmanager.cpp
-        qdbmanager/tpmanager.h
-
 
         main.cpp
         mainwindow.cpp
@@ -49,8 +38,6 @@ set(PROJECT_SOURCES
         spectrasServerResponseHandler.cpp
         spectralMeasurementBarChart.h
         spectralMeasurementBarChart.cpp
-        spectralMeasurementDbEntity.h
-        spectralMeasurementDbEntity.cpp
         mainwindow.ui
 
         testEntity.h

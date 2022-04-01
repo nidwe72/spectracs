@@ -30,10 +30,6 @@
 
 #include "applicationContext.h"
 
-#include "spectralMeasurementDbEntity.h"
-
-#include "qdbmanager/qdbmanager.h"
-
 #include <QtOrm/qormglobal.h>
 #include <QtOrm/QOrmSession>
 
