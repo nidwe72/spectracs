@@ -45,7 +45,20 @@ set(PROJECT_SOURCES
 
 
         ${TS_FILES}
-        ui/SpectralJobViewModule.cpp ui/SpectralJobViewModule.h ui/HomeViewModule.cpp ui/HomeViewModule.h ui/SpectralJobsViewModule.cpp ui/SpectralJobsViewModule.h ui/SpectralJobOverviewViewModule.cpp ui/SpectralJobOverviewViewModule.h)
+        ui/SpectralJobViewModule.cpp
+        ui/SpectralJobViewModule.h
+        ui/HomeViewModule.cpp
+        ui/HomeViewModule.h
+        ui/SpectralJobsViewModule.cpp
+        ui/SpectralJobsViewModule.h
+        ui/SpectralJobOverviewViewModule.cpp
+        ui/SpectralJobOverviewViewModule.h
+
+        logic/camera/CameraLogicModule.cpp
+        logic/camera/CameraLogicModule.h
+
+
+)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(spectracs
@@ -90,6 +103,10 @@ target_link_libraries(spectracs PRIVATE Qt6::Charts)
 
 find_package(Qt6 COMPONENTS Sql REQUIRED)
 target_link_libraries(spectracs PRIVATE Qt6::Sql)
+
+find_package(Qt6 COMPONENTS MultimediaWidgets REQUIRED)
+target_link_libraries(spectracs PRIVATE Qt6::MultimediaWidgets)
+
 
 add_subdirectory(../../qt-sqlite-orm qt-sqlite-orm.build)
 

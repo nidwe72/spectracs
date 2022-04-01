@@ -5,6 +5,8 @@
 #include "SpectralJobViewModule.h"
 
 
+
+
 SpectralJobViewModule::SpectralJobViewModule(QWidget *parent) : QWidget(parent) {
     QGridLayout* layout=new QGridLayout();
     setLayout(layout);
@@ -41,6 +43,12 @@ SpectralJobViewModule::SpectralJobViewModule(QWidget *parent) : QWidget(parent) 
     QPushButton* saveButton=new QPushButton();
     saveButton->setText("Save");
     layout->addWidget(saveButton,2,1,1,1);
+
+    CameraLogicModule *cameraLogicModule = new CameraLogicModule();
+    bool hasCamera = cameraLogicModule->checkCameraAvailability();
+    if(hasCamera){
+        buttonImport->setText("has Camera");
+    }
 
 
 

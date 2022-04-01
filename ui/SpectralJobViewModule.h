@@ -13,6 +13,8 @@
 
 #include "spectralMeasurementBarChart.h"
 
+#include "logic/camera/CameraLogicModule.h"
+
 class SpectralJobViewModule: public QWidget {
 public:
     explicit SpectralJobViewModule(QWidget *parent = nullptr);
