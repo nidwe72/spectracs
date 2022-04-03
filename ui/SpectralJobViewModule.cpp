@@ -20,36 +20,95 @@ SpectralJobViewModule::SpectralJobViewModule(QWidget *parent) : QWidget(parent) 
     layout->addWidget(buttonImport,0,1,1,1);
 
     /*
-    QChart *chart = new QChart();
-    chart->legend()->hide();
-
-
-    chart->createDefaultAxes();
-    chart->setTitle("Simple line chart example");
-
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
+    SpectralMeasurementBarChart* spectralMeasurementBarChart=new SpectralMeasurementBarChart();
+    layout->addWidget(spectralMeasurementBarChart,1,0,1,2);
     */
 
-    SpectralMeasurementBarChart* spectralMeasurementBarChart=new SpectralMeasurementBarChart();
+    //CameraLogicModule *cameraLogicModule = new CameraLogicModule();
 
-    //layout->addWidget(chartView,2,0,1,1);
-    layout->addWidget(spectralMeasurementBarChart,1,0,1,2);
+    camera=new QCamera(QMediaDevices::defaultVideoInput());
+
+    buttonImport->setText(camera->cameraDevice().description());
+
+    captureSession=new QMediaCaptureSession();
+    captureSession->setCamera(camera);
+
+    imageCapture = new QImageCapture;
+    captureSession->setImageCapture(imageCapture);
+
+
+    QVideoWidget* viewfinder = new QVideoWidget;
+    captureSession->setVideoOutput(viewfinder);
+
+    layout->addWidget(viewfinder,1,0,1,2);
+    viewfinder->show();
+
+    camera->start();
+
+    if(imageCapture->isReadyForCapture()){
+        buttonImport->setText("ready for capture");
+    }else{
+        buttonImport->setText("not for capture");
+    }
+
+    imageCapture->setResolution(640,480);
+    imageCapture->setFileFormat(imageCapture->JPEG);
 
     QPushButton* backButton=new QPushButton();
     backButton->setText("Back");
-    layout->addWidget(backButton,2,0,1,1);
+    layout->addWidget(backButton,3,0,1,1);
 
     QPushButton* saveButton=new QPushButton();
     saveButton->setText("Save");
-    layout->addWidget(saveButton,2,1,1,1);
+    layout->addWidget(saveButton,3,1,1,1);
 
-    CameraLogicModule *cameraLogicModule = new CameraLogicModule();
-    bool hasCamera = cameraLogicModule->checkCameraAvailability();
-    if(hasCamera){
-        buttonImport->setText("has Camera");
+    connect(saveButton, &QPushButton::released, this, &SpectralJobViewModule::handleButton);
+
+
+    connect(imageCapture, &QImageCapture::imageCaptured, this, &SpectralJobViewModule::processCapturedImage);
+    connect(imageCapture, &QImageCapture::errorOccurred, this, &SpectralJobViewModule::displayCaptureError);
+
+}
+
+void SpectralJobViewModule::handleButton() {
+    qDebug() << "handleButton//1";
+    //imageCapture->capture();
+
+    if (camera->cameraFormat().isNull()) {
+        auto formats = camera->cameraDevice().videoFormats();
+        if (!formats.isEmpty()) {
+            // Choose a decent camera format: Maximum resolution at at least 30 FPS
+            // we use 29 FPS to compare against as some cameras report 29.97 FPS...
+            QCameraFormat bestFormat;
+            for (const auto &fmt : formats) {
+                if (bestFormat.maxFrameRate() < 29 && fmt.maxFrameRate() > bestFormat.maxFrameRate())
+                    bestFormat = fmt;
+                else if (bestFormat.maxFrameRate() == fmt.maxFrameRate() &&
+                         bestFormat.resolution().width()*bestFormat.resolution().height() <
+                         fmt.resolution().width()*fmt.resolution().height())
+                    bestFormat = fmt;
+            }
+
+            qDebug()<< "width: " << bestFormat.resolution().width();
+            qDebug()<< "height: " << bestFormat.resolution().height();
+
+            camera->setCameraFormat(bestFormat);
+        }
     }
 
 
 
+    imageCapture->captureToFile("/home/nidwe/testCapture.jpg");
+    qDebug() << "handleButton//2";
+}
+
+void SpectralJobViewModule::processCapturedImage(int requestId, const QImage &img) {
+    qDebug() << "processCapturedImage()";
+}
+
+void SpectralJobViewModule::displayCaptureError(int id, const QImageCapture::Error error, const QString &errorString)
+{
+    Q_UNUSED(id);
+    Q_UNUSED(error);
+    QMessageBox::warning(this, tr("Image Capture Error"), errorString);
 }
