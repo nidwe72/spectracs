@@ -72,6 +72,9 @@ SpectralJobViewModule::SpectralJobViewModule(QWidget *parent) : QWidget(parent) 
 
 void SpectralJobViewModule::handleButton() {
     qDebug() << "handleButton//1";
+
+    camera->start();
+
     //imageCapture->capture();
 
     if (camera->cameraFormat().isNull()) {
@@ -81,6 +84,11 @@ void SpectralJobViewModule::handleButton() {
             // we use 29 FPS to compare against as some cameras report 29.97 FPS...
             QCameraFormat bestFormat;
             for (const auto &fmt : formats) {
+
+                int width=fmt.resolution().width();
+                int height=fmt.resolution().height();
+                float maximalFps = fmt.maxFrameRate();
+                
                 if (bestFormat.maxFrameRate() < 29 && fmt.maxFrameRate() > bestFormat.maxFrameRate())
                     bestFormat = fmt;
                 else if (bestFormat.maxFrameRate() == fmt.maxFrameRate() &&
@@ -96,7 +104,8 @@ void SpectralJobViewModule::handleButton() {
         }
     }
 
-    QThread::msleep(500);
+
+    //QThread::msleep(3000);
 
     qDebug() << "handleButton//2";
 
@@ -115,6 +124,17 @@ void SpectralJobViewModule::processCapturedImage(int requestId, const QImage &im
     a1(1,1)=100;
 
     std::cout << a1 << std::endl;
+
+
+    int hue=qRed(img.pixel(100,100));
+    std::cout << "hue:" << hue << std::endl;
+
+
+
+    int gray=qGray(img.pixel(100,100));
+    std::cout << "gray=:" << gray << std::endl;
+
+    std::cout << "end"<< std::endl;
 
 
 }
