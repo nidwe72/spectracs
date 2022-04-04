@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.16)
 
 project(spectracs VERSION 0.1 LANGUAGES CXX)
 
+
+
+#target_compile_features(xtl INTERFACE cxx_std_17)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -13,8 +17,6 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Core)
 
@@ -107,10 +109,15 @@ target_link_libraries(spectracs PRIVATE Qt6::Sql)
 find_package(Qt6 COMPONENTS MultimediaWidgets REQUIRED)
 target_link_libraries(spectracs PRIVATE Qt6::MultimediaWidgets)
 
-
 add_subdirectory(../../qt-sqlite-orm qt-sqlite-orm.build)
-
 target_link_libraries(spectracs PUBLIC qtorm)
+
+add_subdirectory(../../xtl xtl.build)
+target_link_libraries(spectracs PUBLIC xtl)
+
+add_subdirectory(../../xtensor xtensor.build)
+target_link_libraries(spectracs PUBLIC xtensor)
+
 
 
 

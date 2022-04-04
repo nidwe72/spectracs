@@ -19,13 +19,22 @@
 #include <QCameraFormat>
 
 #include <QMessageBox>
-
-
-
-
 #include "spectralMeasurementBarChart.h"
 
 #include "logic/camera/CameraLogicModule.h"
+
+#include <xtensor/xarray.hpp>
+#include <xtensor/xio.hpp>
+#include <xtensor/xview.hpp>
+
+#include <xtensor/xadapt.hpp>
+
+#include <iostream>
+
+#include <QThread>
+
+
+
 
 class SpectralJobViewModule: public QWidget {
 public:
