@@ -4,9 +4,6 @@
 
 #include "SpectralJobViewModule.h"
 
-
-
-
 SpectralJobViewModule::SpectralJobViewModule(QWidget *parent) : QWidget(parent) {
     QGridLayout* layout=new QGridLayout();
     setLayout(layout);
@@ -24,35 +21,29 @@ SpectralJobViewModule::SpectralJobViewModule(QWidget *parent) : QWidget(parent) 
     layout->addWidget(spectralMeasurementBarChart,1,0,1,2);
     */
 
-    //CameraLogicModule *cameraLogicModule = new CameraLogicModule();
 
-    camera=new QCamera(QMediaDevices::defaultVideoInput());
-
-    buttonImport->setText(camera->cameraDevice().description());
+    //buttonImport->setText(camera->cameraDevice().description());
 
     captureSession=new QMediaCaptureSession();
     captureSession->setCamera(camera);
+
+
 
     imageCapture = new QImageCapture;
     captureSession->setImageCapture(imageCapture);
 
 
-    QVideoWidget* viewfinder = new QVideoWidget;
-    captureSession->setVideoOutput(viewfinder);
+    BaseGraphicsPixmapView *baseGraphicsView = new BaseGraphicsPixmapView(this);
 
-    layout->addWidget(viewfinder,1,0,1,2);
-    viewfinder->show();
 
-    camera->start();
+    //view->fitInView(scene->sceneRect(),Qt::KeepAspectRatio);
 
-    if(imageCapture->isReadyForCapture()){
-        buttonImport->setText("ready for capture");
-    }else{
-        buttonImport->setText("not for capture");
-    }
+    //view->fitInView(scene->itemsBoundingRect(),Qt::KeepAspectRatio);
 
-    imageCapture->setResolution(640,480);
-    imageCapture->setFileFormat(imageCapture->JPEG);
+    layout->addWidget(baseGraphicsView,1,0,1,2);
+
+    //imageCapture->setResolution(640,480);
+    //imageCapture->setFileFormat(imageCapture->JPEG);
 
     QPushButton* backButton=new QPushButton();
     backButton->setText("Back");
@@ -68,15 +59,40 @@ SpectralJobViewModule::SpectralJobViewModule(QWidget *parent) : QWidget(parent) 
     connect(imageCapture, &QImageCapture::imageCaptured, this, &SpectralJobViewModule::processCapturedImage);
     connect(imageCapture, &QImageCapture::errorOccurred, this, &SpectralJobViewModule::displayCaptureError);
 
+
 }
 
-void SpectralJobViewModule::handleButton() {
-    qDebug() << "handleButton//1";
+void SpectralJobViewModule::prepareCamera(){
 
+
+    /*
+    QVideoWidget* viewfinder = new QVideoWidget;
+    captureSession->setVideoOutput(viewfinder);
+    layout->addWidget(viewfinder,1,0,1,2);
+    viewfinder->show();
+    */
+
+
+    CameraLogicModule *cameraLogicModule = new CameraLogicModule();
+    //QCamera *camera1 = cameraLogicModule->getCamera();
+    //camera = cameraLogicModule->getCamera();
+
+    camera=new QCamera(QMediaDevices::defaultVideoInput());
     camera->start();
 
-    //imageCapture->capture();
+    if(imageCapture->isReadyForCapture()){
+        //buttonImport->setText("ready for capture");
 
+    }else{
+        //buttonImport->setText("not ready for capture");
+    }
+
+    applyCameraFormat();
+
+
+}
+
+void SpectralJobViewModule::applyCameraFormat(){
     if (camera->cameraFormat().isNull()) {
         auto formats = camera->cameraDevice().videoFormats();
         if (!formats.isEmpty()) {
@@ -88,34 +104,68 @@ void SpectralJobViewModule::handleButton() {
                 int width=fmt.resolution().width();
                 int height=fmt.resolution().height();
                 float maximalFps = fmt.maxFrameRate();
-                
-                if (bestFormat.maxFrameRate() < 29 && fmt.maxFrameRate() > bestFormat.maxFrameRate())
+
+                if (bestFormat.maxFrameRate() < 29 && fmt.maxFrameRate() > bestFormat.maxFrameRate()){
                     bestFormat = fmt;
+                }
                 else if (bestFormat.maxFrameRate() == fmt.maxFrameRate() &&
                          bestFormat.resolution().width()*bestFormat.resolution().height() <
-                         fmt.resolution().width()*fmt.resolution().height())
+                         fmt.resolution().width()*fmt.resolution().height()){
                     bestFormat = fmt;
+                }
+
+                if(width==640 && height==480){
+                    //bestFormat = fmt;
+                }
             }
 
             qDebug()<< "width: " << bestFormat.resolution().width();
             qDebug()<< "height: " << bestFormat.resolution().height();
 
+
+            QThread::msleep(3000);
             camera->setCameraFormat(bestFormat);
+
+
         }
+
+        const QCameraFormat &format = camera->cameraFormat();
+        qDebug()<< "width: " << format.resolution().width();
+
+
     }
 
+}
 
-    //QThread::msleep(3000);
-
+void SpectralJobViewModule::handleButton() {
+    qDebug() << "handleButton//1";
     qDebug() << "handleButton//2";
 
-    imageCapture->capture();
+    //imageCapture->capture();
+    //imageCapture->captureToFile("/home/nidwe/Pictures/test.jpg");
+
+    processCapturedImageBridge();
+}
+
+void SpectralJobViewModule::processCapturedImageBridge() {
+    qDebug() << "processCapturedImageBridge()";
+
+    //get ThunderOPtiocs live image via
+    //fswebcam --resolution --no-banner ect.
+
+    //imageCapture->captureToFile("/home/nidwe/testCapture.jpg");
+
+    QImage* image=new QImage("/home/nidwe/2.png");
+
+    qDebug() << "processCapturedImageBridge()//2";
 }
 
 void SpectralJobViewModule::processCapturedImage(int requestId, const QImage &img) {
     qDebug() << "processCapturedImage()";
 
     //imageCapture->captureToFile("/home/nidwe/testCapture.jpg");
+
+    QImage* image=new QImage("/home/nidwe/testPhilips.png");
 
     std::vector<double> v = {1., 2., 3., 4., 5., 6. };
     std::vector<std::size_t> shape = { 1, 6 };
@@ -124,7 +174,6 @@ void SpectralJobViewModule::processCapturedImage(int requestId, const QImage &im
     a1(1,1)=100;
 
     std::cout << a1 << std::endl;
-
 
     int hue=qRed(img.pixel(100,100));
     std::cout << "hue:" << hue << std::endl;

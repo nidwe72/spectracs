@@ -9,6 +9,8 @@ project(spectracs VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set( CMAKE_BUILD_TYPE Debug )
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_PREFIX_PATH "/home/nidwe/Qt/6.2.4/gcc_64")
@@ -60,7 +62,7 @@ set(PROJECT_SOURCES
         logic/camera/CameraLogicModule.h
 
 
-)
+        ui/BaseGraphicsPixmapView.cpp ui/BaseGraphicsPixmapView.h)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(spectracs

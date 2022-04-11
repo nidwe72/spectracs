@@ -20,7 +20,7 @@ QCamera* CameraLogicModule::getCamera() {
     QCamera* result= nullptr;
     const QList<QCameraDevice> cameras = QMediaDevices::videoInputs();
     for (const QCameraDevice &cameraDevice : cameras) {
-        if (cameraDevice.description().contains("Thunder"))
+        if (cameraDevice.description().contains("OBS"))
             result = new QCamera(cameraDevice);
     }
     return result;

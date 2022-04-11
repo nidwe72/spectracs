@@ -33,6 +33,22 @@
 
 #include <QThread>
 
+#include <QGraphicsScene>
+
+#include <QGraphicsView>
+
+#include <QPixmap>
+
+#include <QGraphicsLineItem>
+
+#include <QLineF>
+
+
+#include "ui/BaseGraphicsPixmapView.h"
+
+
+
+
 
 
 
@@ -44,6 +60,9 @@ private:
     QImageCapture* imageCapture= nullptr;
     QMediaCaptureSession* captureSession= nullptr;
     QCamera *camera= nullptr;
+    void prepareCamera();
+    void applyCameraFormat();
+    void processCapturedImageBridge();
 
 private slots:
 
