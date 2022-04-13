@@ -144,6 +144,8 @@ void SpectralJobViewModule::handleButton() {
     //imageCapture->capture();
     //imageCapture->captureToFile("/home/nidwe/Pictures/test.jpg");
 
+    Signal::savgolCoefficients(10,3,0,1);
+
     processCapturedImageBridge();
 }
 
@@ -167,13 +169,17 @@ void SpectralJobViewModule::processCapturedImage(int requestId, const QImage &im
 
     QImage* image=new QImage("/home/nidwe/testPhilips.png");
 
+
     std::vector<double> v = {1., 2., 3., 4., 5., 6. };
     std::vector<std::size_t> shape = { 1, 6 };
+
+    /*
     auto a1 = xt::adapt(v, shape);
 
     a1(1,1)=100;
 
     std::cout << a1 << std::endl;
+     */
 
     int hue=qRed(img.pixel(100,100));
     std::cout << "hue:" << hue << std::endl;

@@ -6,7 +6,7 @@ project(spectracs VERSION 0.1 LANGUAGES CXX)
 
 #target_compile_features(xtl INTERFACE cxx_std_17)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set( CMAKE_BUILD_TYPE Debug )
@@ -62,7 +62,7 @@ set(PROJECT_SOURCES
         logic/camera/CameraLogicModule.h
 
 
-        ui/BaseGraphicsPixmapView.cpp ui/BaseGraphicsPixmapView.h)
+        ui/BaseGraphicsPixmapView.cpp ui/BaseGraphicsPixmapView.h logic/math/signal/Signal.cpp logic/math/signal/Signal.h)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(spectracs
@@ -99,6 +99,8 @@ set_target_properties(spectracs PROPERTIES
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
 )
 
+
+
 find_package(Qt6 COMPONENTS Network REQUIRED)
 target_link_libraries(spectracs PRIVATE Qt6::Network)
 
@@ -117,11 +119,11 @@ target_link_libraries(spectracs PUBLIC qtorm)
 add_subdirectory(../../xtl xtl.build)
 target_link_libraries(spectracs PUBLIC xtl)
 
-add_subdirectory(../../xtensor xtensor.build)
-target_link_libraries(spectracs PUBLIC xtensor)
+#add_subdirectory(../../xtensor xtensor.build)
+#target_link_libraries(spectracs PUBLIC xtensor)
 
-
-
+add_subdirectory(../../NumCpp NumCpp.build)
+target_link_libraries(spectracs PUBLIC NumCpp)
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(spectracs)
